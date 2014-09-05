@@ -78,6 +78,48 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 	@Parameter(property = "plugins")
 	private List<String> plugins;
 
+	@Parameter(property = "icon", defaultValue = "default_app_logo.png")
+	private String icon;
+
+	@Parameter(property = "width", defaultValue = "1024")
+	private Integer width;
+
+	@Parameter(property = "max-width")
+	private Integer maxWidth;
+
+	@Parameter(property = "min-width")
+	private Integer minWidth;
+
+	@Parameter(property = "height", defaultValue = "768")
+	private Integer height;
+
+	@Parameter(property = "max-height")
+	private Integer maxHeight;
+
+	@Parameter(property = "min-height")
+	private Integer minHeight;
+
+	@Parameter(property = "fullscreen", defaultValue = "false")
+	private Boolean fullscreen;
+
+	@Parameter(property = "resizable", defaultValue = "true")
+	private Boolean resizable;
+
+	@Parameter(property = "chrome", defaultValue = "true")
+	private Boolean chrome;
+
+	@Parameter(property = "scrollable", defaultValue = "true")
+	private Boolean scrollable;
+
+	@Parameter(property = "maximizable", defaultValue = "true")
+	private Boolean maximizable;
+
+	@Parameter(property = "minimizable", defaultValue = "true")
+	private Boolean minimizable;
+
+	@Parameter(property = "closeable", defaultValue = "true")
+	private Boolean closeable;
+
 	private final Log log = getLog();
 
 
@@ -122,7 +164,61 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 		this.plugins = plugins;
 	}
 
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	public void setMaxWidth(Integer maxWidth) {
+		this.maxWidth = maxWidth;
+	}
+
+	public void setMinWidth(Integer minWidth) {
+		this.minWidth = minWidth;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+	public void setMaxHeight(Integer maxHeight) {
+		this.maxHeight = maxHeight;
+	}
+
+	public void setMinHeight(Integer minHeight) {
+		this.minHeight = minHeight;
+	}
+
+	public void setFullscreen(Boolean fullscreen) {
+		this.fullscreen = fullscreen;
+	}
+
+	public void setResizable(Boolean resizable) {
+		this.resizable = resizable;
+	}
+
+	public void setScrollable(Boolean scrollable) {
+		this.scrollable = scrollable;
+	}
+
+	public void setChrome(Boolean chrome) {
+		this.chrome = chrome;
+	}
+
+	public void setMaximizable(Boolean maximizable) {
+		this.maximizable = maximizable;
+	}
+
+	public void setMinimizable(Boolean minimizable) {
+		this.minimizable = minimizable;
+	}
+
+	public void setCloseable(Boolean closeable) {
+		this.closeable = closeable;
+	}
 
 	protected MavenProject getProject() {
 		return project;
@@ -171,6 +267,62 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 
 	protected List<String> getPlugins() {
 		return plugins;
+	}
+
+	protected String getIcon() {
+		return icon;
+	}
+
+	protected Integer getWidth() {
+		return width;
+	}
+
+	protected Integer getMaxWidth() {
+		return maxWidth == null ? getWidth() : maxWidth;
+	}
+
+	protected Integer getMinWidth() {
+		return minWidth == null ? getWidth() : minWidth;
+	}
+
+	protected Integer getHeight() {
+		return height;
+	}
+
+	protected Integer getMaxHeight() {
+		return maxHeight == null ? getHeight() : maxHeight;
+	}
+
+	protected Integer getMinHeight() {
+		return minHeight == null ? getHeight() : minHeight;
+	}
+
+	protected Boolean getFullscreen() {
+		return fullscreen;
+	}
+
+	protected Boolean getResizable() {
+		return resizable;
+	}
+
+	protected Boolean getScrollable() {
+		return scrollable;
+	}
+
+	protected Boolean getChrome() {
+		return chrome;
+	}
+
+	protected Boolean getMaximizable() {
+		return maximizable;
+	}
+
+	protected Boolean getMinimizable() {
+		return minimizable;
+	}
+
+	protected Boolean getCloseable() {
+		return closeable;
 	}
 
 	protected File getTidesdkDirectory() {

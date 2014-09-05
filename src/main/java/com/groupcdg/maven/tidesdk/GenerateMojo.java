@@ -20,7 +20,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.maven.model.FileSet;
-import org.apache.maven.model.Organization;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -109,7 +108,7 @@ public class GenerateMojo extends AbstractTidesdkMojo {
 				"#appname: " + getEscapedName(),
 				"#publisher: " + getPublisher(project),
 				"#url: " + getUrl(project),
-				"#image: default_app_logo.png",
+				"#image: " + getIcon(),
 				"#appid: " + project.getGroupId() + '.' + project.getArtifactId(),
 				"#desc: " + project.getDescription(),
 				"#type: desktop",
@@ -136,28 +135,28 @@ public class GenerateMojo extends AbstractTidesdkMojo {
 				"<?xml version='1.0' encoding='UTF-8'?>",
 				"<ti:app xmlns:ti='http://ti.appcelerator.org'>",
 				"<id>" + project.getGroupId() + '.' + project.getArtifactId() + "</id>",
-				"<name>" + getEscapedName() + "</name>",
+				"<name>" + getName() + "</name>",
 				"<version>" + project.getVersion() + "</version>",
 				"<publisher>" + getPublisher(project) + "</publisher>",
 				"<url>" + getUrl(project) + "</url>",
-				"<icon>default_app_logo.png</icon>",
+				"<icon>" + getIcon() + "</icon>",
 				"<copyright>" + Calendar.getInstance().get(Calendar.YEAR) + " " + getPublisher(project) + "</copyright>",
 				"<window>",
-				"<id>initial</id>",
-				"<title>" + getName() + "</title>",
-				"<url>app://index.html</url>",
-				"<width>700</width>",
-				"<max-width>3000</max-width>",
-				"<min-width>0</min-width>",
-				"<height>500</height>",
-				"<max-height>3000</max-height>",
-				"<min-height>0</min-height>",
-				"<fullscreen>false</fullscreen>",
-				"<resizable>true</resizable>",
-				"<chrome scrollbars=\"true\">true</chrome>",
-				"<maximizable>true</maximizable>",
-				"<minimizable>true</minimizable>",
-				"<closeable>true</closeable>",
+				"\t<id>initial</id>",
+				"\t<title>" + getName() + "</title>",
+				"\t<url>app://index.html</url>",
+				"\t<width>" + getWidth() + "</width>",
+				"\t<max-width>" + getMaxWidth() + "</max-width>",
+				"\t<min-width>" + getMinWidth() + "</min-width>",
+				"\t<height>" + getHeight() + "</height>",
+				"\t<max-height>" + getMaxHeight() + "</max-height>",
+				"\t<min-height>" + getMinHeight() + "</min-height>",
+				"\t<fullscreen>" + String.valueOf(getFullscreen()) + "</fullscreen>",
+				"\t<resizable>" + String.valueOf(getResizable()) + "</resizable>",
+				"\t<chrome scrollbars=\"" + String.valueOf(getScrollable()) + "\">" + String.valueOf(getChrome()) + "</chrome>",
+				"\t<maximizable>" + String.valueOf(getMaximizable()) + "</maximizable>",
+				"\t<minimizable>" + String.valueOf(getMinimizable()) + "</minimizable>",
+				"\t<closeable>" + String.valueOf(getCloseable()) + "</closeable>",
 				"</window>",
 				"</ti:app>"
 		);
