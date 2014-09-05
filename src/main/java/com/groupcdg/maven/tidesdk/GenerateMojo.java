@@ -82,7 +82,6 @@ public class GenerateMojo extends AbstractTidesdkMojo {
 	}
 
 	private void create(final File outputDirectory, final File resourcesDirectory) throws IOException, InterruptedException {
-		// Create
 		FileUtils.copyDirectory(resourcesDirectory, new File(outputDirectory, "Resources"));
 		FileUtils.writeLines(new File(outputDirectory, "manifest"), createManifest());
 		FileUtils.writeLines(new File(outputDirectory, "tiapp.xml"), createXml());
@@ -129,54 +128,41 @@ public class GenerateMojo extends AbstractTidesdkMojo {
 	}
 
 	private Collection<String> createXml() {
-		MavenProject project = getProject();
+		return new ArrayList<String>() {{
+			add("<?xml version='1.0' encoding='UTF-8'?>");
+			add("<ti:app xmlns:ti='http://ti.appcelerator.org'>");
 
-		return Arrays.asList(
-				"<?xml version='1.0' encoding='UTF-8'?>",
-				"<ti:app xmlns:ti='http://ti.appcelerator.org'>",
-				"<id>" + project.getGroupId() + '.' + project.getArtifactId() + "</id>",
-				"<name>" + getName() + "</name>",
-				"<version>" + project.getVersion() + "</version>",
-				"<publisher>" + getPublisher(project) + "</publisher>",
-				"<url>" + getUrl(project) + "</url>",
-				"<icon>" + getIcon() + "</icon>",
-				"<copyright>" + Calendar.getInstance().get(Calendar.YEAR) + " " + getPublisher(project) + "</copyright>",
-				"<window>",
-				"\t<id>initial</id>",
-				"\t<title>" + getName() + "</title>",
-				"\t<url>app://index.html</url>",
-				"\t<width>" + getWidth() + "</width>",
-				"\t<max-width>" + getMaxWidth() + "</max-width>",
-				"\t<min-width>" + getMinWidth() + "</min-width>",
-				"\t<height>" + getHeight() + "</height>",
-				"\t<max-height>" + getMaxHeight() + "</max-height>",
-				"\t<min-height>" + getMinHeight() + "</min-height>",
-				"\t<fullscreen>" + String.valueOf(getFullscreen()) + "</fullscreen>",
-				"\t<resizable>" + String.valueOf(getResizable()) + "</resizable>",
-				"\t<chrome scrollbars=\"" + String.valueOf(getScrollable()) + "\">" + String.valueOf(getChrome()) + "</chrome>",
-				"\t<maximizable>" + String.valueOf(getMaximizable()) + "</maximizable>",
-				"\t<minimizable>" + String.valueOf(getMinimizable()) + "</minimizable>",
-				"\t<closeable>" + String.valueOf(getCloseable()) + "</closeable>",
-				"</window>",
-				"</ti:app>"
-		);
+			MavenProject project = getProject();
+			add("<id>" + project.getGroupId() + '.' + project.getArtifactId() + "</id>");
+			add("<name>" + getName() + "</name>");
+			add("<version>" + project.getVersion() + "</version>");
+
+			String publisher = getPublisher(project);
+			if(publisher != null) {
+				add("<publisher>" + publisher + "</publisher>");
+				add("<copyright>" + Calendar.getInstance().get(Calendar.YEAR) + " " + publisher + "</copyright>");
+			}
+			String url = getUrl(project);
+			if(url != null) add("<url>" + url + "</url>");
+
+			String icon = getIcon();
+			if(icon != null) add("<icon>" + icon + "</icon>");
+			addAll(getDisplay().createXml(getName(), getIndex()));
+
+			add("</ti:app>");
+		}};
 	}
 
 	private String getPublisher(MavenProject project) {
 		return project.getOrganization() != null ? project.getOrganization().getName()
 				: !project.getDevelopers().isEmpty() ? project.getDevelopers().get(0).getName()
-				: unknown("Publisher");
+				: null;
 	}
 
 	private String getUrl(MavenProject project) {
 		return project.getUrl() != null ? project.getUrl()
 				: project.getOrganization() != null ? project.getOrganization().getUrl()
 				: !project.getDevelopers().isEmpty() ? project.getDevelopers().get(0).getUrl()
-				: unknown("Url");
-	}
-
-	private String unknown(String field) {
-		getLog().warn(new StringBuilder(NO_VALUE_MESSAGE).append(field));
-		return UNKNOWN_VALUE;
+				: null;
 	}
 }
