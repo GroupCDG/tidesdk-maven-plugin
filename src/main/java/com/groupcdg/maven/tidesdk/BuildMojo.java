@@ -43,13 +43,11 @@ public class BuildMojo extends AbstractTidesdkMojo {
 
 
 	private void build(final File outputDirectory) throws MojoExecutionException {
-		File buildDirectory = new File(outputDirectory, "packages/" + OS.system().name() + "/bundle");
+		final OS os = OS.system();
+		final File buildDirectory = new File(outputDirectory, "packages/" + os.name() + "/bundle");
 		buildDirectory.mkdirs();
-		run(new ProcessBuilder(getPythonCommand(), getCommand(),
-				"-d", buildDirectory.getAbsolutePath(),
-				"-i", "'dist,packages'",
-				"-t", "bundle",
-				"-p", "-v",
+		run(new ProcessBuilder(os.pythonCommand(getPythonCommand()), os.builderCommand(getSdkHome(), getSdkVersion()),
+				"-d", buildDirectory.getAbsolutePath(), "-i", "'dist,packages'", "-t", "bundle", "-p", "-v",
 				outputDirectory.getAbsolutePath()), BUILD);
 	}
 }

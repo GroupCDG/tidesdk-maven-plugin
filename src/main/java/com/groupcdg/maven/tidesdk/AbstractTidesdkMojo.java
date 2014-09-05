@@ -33,9 +33,9 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 	protected static final String CREATE_DIRECTORY_ERROR_MESSAGE = "Could not create directory ";
 
 	protected static enum OS {
-		win32("Windows"),
-		osx("Mac"),
-		linux("Linux");
+		win32("Windows", "python", "C:\\ProgramData\\TideSDK"),
+		osx("Mac", "python", System.getProperty("user.home") + "/Library/Application Support/TideSDK"),
+		linux("Linux", "python", System.getProperty("user.home") + "/.tidesdk");
 
 		public static OS system() throws MojoExecutionException {
 			final String name = System.getProperty("os.name");
@@ -43,10 +43,33 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 			throw new MojoExecutionException("Unsupported operating system: " + name);
 		}
 
-		private final String key;
+		private final String key, python, sdk;
 
-		private OS(String key) {
+		private OS(String key, String python, String sdk) {
 			this.key = key;
+			this.python = python;
+			this.sdk = sdk;
+		}
+
+		public String pythonCommand(String commandOverride) {
+			String command;
+			if(commandOverride != null) command = commandOverride;
+			else if(System.getenv("PYTHON_HOME") != null) {
+				String[] prefix = System.getenv("PYTHON_HOME").split(":");
+				command = new StringBuilder(prefix[prefix.length - 1])
+						.append(File.separatorChar).append("bin")
+						.append(File.separatorChar).append("python").toString();
+			}
+			else command = python;
+			return command;
+		}
+
+		public String builderCommand(String sdkOverride, String version) {
+			return new StringBuilder(sdkOverride == null ? sdk : sdkOverride)
+					.append(File.separatorChar).append("sdk")
+					.append(File.separatorChar).append(name())
+					.append(File.separatorChar).append(version)
+					.append(File.separatorChar).append("tidebuilder.py").toString();
 		}
 	}
 
@@ -70,32 +93,23 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 	@Parameter(property = "project", defaultValue = "${project}", required = true, readonly = true)
 	private MavenProject project;
 
-	@Parameter(property = "pythonCommand", defaultValue = "python", required = true)
-	private String pythonCommand;
-
-	@Parameter(property = "sdkHome", defaultValue = "/Users/simon/Library/Application Support/TideSDK", required = true)
-	private String sdkHome;
-
-	@Parameter(property = "sdkVersion", defaultValue = "1.3.1-beta", required = true)
-	private String sdkVersion;
-
-	@Parameter(property = "command", defaultValue = "/Users/simon/Library/Application Support/TideSDK/sdk/osx/1.3.1-beta/tidebuilder.py", required = true)
-	private String command;
+	@Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/tidesdk", required = true)
+	private File outputDirectory;
 
 	@Parameter(property = "name", defaultValue = "${project.name}", required = true)
 	private String name;
 
-	@Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/tidesdk", required = true)
-	private File outputDirectory;
+	@Parameter(property = "sdkVersion", required = true)
+	private String sdkVersion;
+
+	@Parameter(property = "sdkHome")
+	private String sdkHome;
+
+	@Parameter(property = "pythonCommand")
+	private String pythonCommand;
 
 	@Parameter(property = "fileSets")
 	private List<FileSet> fileSets;
-
-	@Parameter(property = "platforms", required = true)
-	private List<String> platforms;
-
-	@Parameter(property = "plugins")
-	private List<String> plugins;
 
 	@Parameter(property = "icon")
 	private String icon;
@@ -114,40 +128,28 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 		this.project = project;
 	}
 
-	public void setPythonCommand(String pythonCommand) {
-		this.pythonCommand = pythonCommand;
-	}
-
-	public void setSdkHome(String sdkHome) {
-		this.sdkHome = sdkHome;
-	}
-
-	public void setSdkVersion(String sdkVersion) {
-		this.sdkVersion = sdkVersion;
-	}
-
-	public void setCommand(String command) {
-		this.command = command;
+	public void setOutputDirectory(File outputDirectory) {
+		this.outputDirectory = outputDirectory;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setOutputDirectory(File outputDirectory) {
-		this.outputDirectory = outputDirectory;
+	public void setSdkVersion(String sdkVersion) {
+		this.sdkVersion = sdkVersion;
+	}
+
+	public void setSdkHome(String sdkHome) {
+		this.sdkHome = sdkHome;
+	}
+
+	public void setPythonCommand(String pythonCommand) {
+		this.pythonCommand = pythonCommand;
 	}
 
 	public void setFileSets(List<FileSet> fileSets) {
 		this.fileSets = fileSets;
-	}
-
-	public void setPlatforms(List<String> platforms) {
-		this.platforms = platforms;
-	}
-
-	public void setPlugins(List<String> plugins) {
-		this.plugins = plugins;
 	}
 
 	public void setIcon(String icon) {
@@ -163,24 +165,17 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 	}
 
 
+	protected File getTidesdkDirectory() {
+		tidesdkDirectory.mkdirs();
+		return tidesdkDirectory;
+	}
+
 	protected MavenProject getProject() {
 		return project;
 	}
 
-	protected String getPythonCommand() {
-		return pythonCommand;
-	}
-
-	protected String getSdkHome() {
-		return sdkHome;
-	}
-
-	protected String getSdkVersion() {
-		return sdkVersion;
-	}
-
-	protected String getCommand() {
-		return command;
+	protected File getOutputDirectory() {
+		return outputDirectory;
 	}
 
 	protected String getName() {
@@ -191,8 +186,16 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 		return getName().replaceAll("\\s", "_");
 	}
 
-	protected File getOutputDirectory() {
-		return outputDirectory;
+	protected String getSdkVersion() {
+		return sdkVersion;
+	}
+
+	protected String getSdkHome() {
+		return sdkHome;
+	}
+
+	protected String getPythonCommand() {
+		return pythonCommand;
 	}
 
 	protected List<FileSet> getFileSets() {
@@ -202,14 +205,6 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 			fileSets = Collections.singletonList(r);
 		}
 		return fileSets;
-	}
-
-	protected List<String> getPlatforms() {
-		return platforms;
-	}
-
-	protected List<String> getPlugins() {
-		return plugins;
 	}
 
 	protected String getIcon() {
@@ -222,11 +217,6 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 
 	protected Display getDisplay() {
 		return display;
-	}
-
-	protected File getTidesdkDirectory() {
-		tidesdkDirectory.mkdirs();
-		return tidesdkDirectory;
 	}
 
 	protected void run(ProcessBuilder processBuilder, String goal) throws MojoExecutionException {
@@ -243,7 +233,6 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 					.append(goal).append(" goal.").toString(), e);
 		}
 	}
-
 
 
 	private File getLogsDirectory() {
