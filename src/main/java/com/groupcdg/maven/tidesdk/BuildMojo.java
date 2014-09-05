@@ -21,7 +21,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.File;
-import java.io.IOException;
 
 
 @Mojo(name = "build", defaultPhase = LifecyclePhase.PACKAGE)
@@ -30,25 +29,21 @@ public class BuildMojo extends AbstractTidesdkMojo {
 
 	private static final String BUILD = "build";
 
-	private static final String BUILD_RESOURCES_ERROR_MESSAGE = "Failed to build resources";
-
 
 
 	public void execute() throws MojoExecutionException {
-		try {
-			final File outputDirectory = getOutputDirectory();
+		final File outputDirectory = getOutputDirectory();
 
-			if (!outputDirectory.exists() && !outputDirectory.mkdirs())
-				throw new MojoExecutionException(CREATE_DIRECTORY_ERROR_MESSAGE + outputDirectory.getAbsolutePath());
+		if (!outputDirectory.exists() && !outputDirectory.mkdirs())
+			throw new MojoExecutionException(CREATE_DIRECTORY_ERROR_MESSAGE + outputDirectory.getAbsolutePath());
 
-			build(outputDirectory);
-		} catch (IOException | InterruptedException e) {
-			throw new MojoExecutionException(BUILD_RESOURCES_ERROR_MESSAGE, e);
-		}
+		build(outputDirectory);
 	}
 
-	private void build(final File outputDirectory) throws IOException, InterruptedException {
-		File buildDirectory = new File(outputDirectory, "packages/osx/bundle");
+
+
+	private void build(final File outputDirectory) throws MojoExecutionException {
+		File buildDirectory = new File(outputDirectory, "packages/" + OS.system().name() + "/bundle");
 		buildDirectory.mkdirs();
 		run(new ProcessBuilder(getPythonCommand(), getCommand(),
 				"-d", buildDirectory.getAbsolutePath(),

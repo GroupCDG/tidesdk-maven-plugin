@@ -18,6 +18,7 @@ package com.groupcdg.maven.tidesdk;
 
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -30,6 +31,24 @@ import java.util.List;
 public abstract class AbstractTidesdkMojo extends AbstractMojo {
 
 	protected static final String CREATE_DIRECTORY_ERROR_MESSAGE = "Could not create directory ";
+
+	protected static enum OS {
+		win32("Windows"),
+		osx("Mac"),
+		linux("Linux");
+
+		public static OS system() throws MojoExecutionException {
+			final String name = System.getProperty("os.name");
+			for(OS os : values()) if(name.startsWith(os.key)) return os;
+			throw new MojoExecutionException("Unsupported operating system: " + name);
+		}
+
+		private final String key;
+
+		private OS(String key) {
+			this.key = key;
+		}
+	}
 
 
 	private static final String LOGS_DIRECTORY = "logs";
@@ -210,13 +229,30 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 		return tidesdkDirectory;
 	}
 
-	protected File getLogsDirectory() {
+	protected void run(ProcessBuilder processBuilder, String goal) throws MojoExecutionException {
+		final File out = new File(getLogsDirectory(), goal + OUT_LOG_SUFFIX);
+		final File err = new File(getLogsDirectory(), goal + ERR_LOG_SUFFIX);
+
+		try {
+			notifyError(logCommand(processBuilder)
+					.redirectOutput(out.exists() ? ProcessBuilder.Redirect.appendTo(out) : ProcessBuilder.Redirect.to(out))
+					.redirectError(err.exists() ? ProcessBuilder.Redirect.appendTo(err) : ProcessBuilder.Redirect.to(err))
+					.start().waitFor(), goal);
+		} catch (IOException | InterruptedException e) {
+			throw new MojoExecutionException(new StringBuilder("Failed to execute ")
+					.append(goal).append(" goal.").toString(), e);
+		}
+	}
+
+
+
+	private File getLogsDirectory() {
 		File logsDirectory = new File(getTidesdkDirectory(), LOGS_DIRECTORY);
 		logsDirectory.mkdirs();
 		return logsDirectory;
 	}
 
-	protected ProcessBuilder logCommand(ProcessBuilder processBuilder) {
+	private ProcessBuilder logCommand(ProcessBuilder processBuilder) {
 		if(log.isInfoEnabled()) {
 			StringBuilder sb = new StringBuilder(COMMAND_MESSAGE_PREFIX);
 			for(String s : processBuilder.command()) sb.append(' ').append(s);
@@ -225,12 +261,9 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 		return processBuilder;
 	}
 
-	protected int run(ProcessBuilder processBuilder, String goal) throws InterruptedException, IOException {
-		final File out = new File(getLogsDirectory(), goal + OUT_LOG_SUFFIX);
-		final File err = new File(getLogsDirectory(), goal + ERR_LOG_SUFFIX);
-		return logCommand(processBuilder)
-				.redirectOutput(out.exists() ? ProcessBuilder.Redirect.appendTo(out) : ProcessBuilder.Redirect.to(out))
-				.redirectError(err.exists() ? ProcessBuilder.Redirect.appendTo(err) : ProcessBuilder.Redirect.to(err))
-				.start().waitFor();
+	private void notifyError(int errorCode, String goal) throws MojoExecutionException {
+		if(errorCode != 0) throw new MojoExecutionException(new StringBuilder("Failed to execute ")
+				.append(goal).append(" goal. Details of the error can be found at ")
+				.append(new File(getLogsDirectory(), goal + ERR_LOG_SUFFIX).getAbsolutePath()).toString());
 	}
 }

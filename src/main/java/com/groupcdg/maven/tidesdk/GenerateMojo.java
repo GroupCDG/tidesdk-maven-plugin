@@ -36,23 +36,9 @@ import static org.apache.commons.io.filefilter.FileFilterUtils.*;
 public class GenerateMojo extends AbstractTidesdkMojo {
 
 
-	private static final String GENERATE = "generate";
-
-	private static final String CREATE = "create";
-
-	private static final String PLATFORM = "platform";
-
-	private static final String PLUGIN = "plugin";
-
-	private static final String ADD = "add";
-
 	private static final String RESOURCES_DIRECTORY = "resources";
 
 	private static final String GENERATE_RESOURCES_ERROR_MESSAGE = "Failed to generate resources";
-
-	private static final String NO_VALUE_MESSAGE = "No value configured for field: ";
-
-	private static final String UNKNOWN_VALUE = "unknown";
 
 
 
