@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
+
+ -->
+<project xmlns="http://maven.apache.org/DECORATION/1.0.1"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.1 http://maven.apache.org/xsd/decoration-1.0.1.xsd" 
+	name="tidesdk-maven-plugin">
+	<publishDate position="navigation-bottom" format="yyyy-MM-dd" />
+
+	<poweredBy>
+		<logo name="Built using Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-button-green.png" />
+		<logo name="CDG" href="http://dev.groupcdg.com/" img="images/cdg-small.png" />
+	</poweredBy>
+
+	<body>
+		
+		<menu name="Documentation">
+			<item name="Overview" href="index.html" />
+			<item name="Javadoc (Release)" href="apidocs/index.html" />
+			<item name="FAQs" href="/faqs.html"/>
+			<item name="License" href="licensecover.html" />
+			<item name="Release Notes" href="changes-report.html" />
+		</menu>
+		
+		<menu ref="modules" />
+
+		<menu name="Development">
+			<!-- 
+			<item name="Mailing lists" href="mail-lists.html" />
+			-->
+			<item name="Jira" href="https://project.groupcdg.com/browse/OMPT/" />
+			<item name="Confluence" href="https://wiki.groupcdg.com/" />
+			<item name="GitHub" href="https://github.com/GroupCDG/tidesdk-maven-plugin/" />
+			<item name="Jenkins" href="https://ci.groupcdg.com/" />
+			<item name="Sonar" href="https://sonar.groupcdg.com/" />
+			<!--
+			<item name="Maven Central" href="http://repo1.maven.org/maven2/org/groupcdg/maven/" />
+			-->
+		</menu>
+
+		<menu ref="reports" />
+		
+	</body>
+
+	<skin>
+	        <groupId>com.googlecode.fluido-skin</groupId>
+	        <artifactId>fluido-skin</artifactId>
+	        <version>1.3</version>
+	</skin>
+	
+</project>

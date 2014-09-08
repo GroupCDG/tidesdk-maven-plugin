@@ -1,0 +1,4 @@
+tidesdk-maven-plugin
+====================
+
+To build run: mvn clean install

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
+
+ -->
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+		
+	<properties>
+		<title>tidesdk-maven-plugin - Changes</title>
+		<author email="simon.sparks@groupcdg.com">Simon Sparks</author>
+	</properties>
+		
+	<body>
+
+		<!-- types are add, fix, remove, update (include #issue# attribute to link to Jira issue id -->
+
+		<release version="0.1.0" date="TBC" description="Initial Release">
+			<action dev="Simon Sparks" type="add">Initial Release</action>
+		</release>
+	</body>
+		
+</document>

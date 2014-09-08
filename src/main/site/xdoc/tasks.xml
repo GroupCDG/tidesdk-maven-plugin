@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
+
+ -->
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>tidesdk-maven-plugin - Tasks</title>
+		<author>simon Sparks</author>
+	</properties>
+
+	<body>
+
+		<section name="tidesdk-maven-plugin Tasks outstanding">
+			<ul>
+				<li></li>
+			</ul>
+			<p>None as yet</p>
+			<p>Contact the mailing lists for more details or to help.</p>
+		</section>
+
+	</body>
+	
+</document>
