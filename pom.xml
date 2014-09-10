@@ -14,8 +14,8 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 	<version>0.1.1-SNAPSHOT</version>
 
 	<name>TideSDK Maven Plugin</name>
-	<url>http://tidesdk.org</url>
-	<description>tidesdk-maven-plugin</description>
+	<url>https://dev.groupcdg.com/public/sites/tidesdk-maven-plugin</url>
+	<description>Plugin for Building TideSDK Assembly</description>
 	<inceptionYear>2014</inceptionYear>
 
 	<organization>
@@ -94,7 +94,7 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 	<distributionManagement>
 		<site>
 			<id>groupcdg-maven-sites</id>
-			<url>scp://dev.groupcdg.com/var/www/dev/private/sites/tidesdk-maven-plugin/</url>
+			<url>scp://dev.groupcdg.com/var/www/dev/public/sites/tidesdk-maven-plugin/</url>
 			<name>tidesdk-maven-plugin Maven Site</name>
 		</site>
 		<repository>
