@@ -46,7 +46,9 @@ public class GenerateMojo extends AbstractTidesdkMojo {
 		try {
 			final File outputDirectory = getOutputDirectory();
 
-			if (!outputDirectory.exists() && !outputDirectory.mkdirs())
+			if(outputDirectory.exists())
+				org.codehaus.plexus.util.FileUtils.deleteDirectory(outputDirectory);
+			if (!outputDirectory.mkdirs())
 				throw new MojoExecutionException( CREATE_DIRECTORY_ERROR_MESSAGE + outputDirectory.getAbsolutePath());
 
 			create(outputDirectory, prepare());
