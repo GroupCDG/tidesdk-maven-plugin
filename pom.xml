@@ -280,8 +280,8 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 				<configuration>
 					<toolchains>
 						<jdk>
-							<version>7.0</version>
-							<vendor>sun</vendor>
+							<version>8.0</version>
+							<vendor>oracle</vendor>
 						</jdk>
 					</toolchains>
 				</configuration>
@@ -292,8 +292,8 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
@@ -304,7 +304,7 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 				<inherited>true</inherited>
 				<configuration>
 					<javadocExecutable>${env.JAVA_HOME}/bin/javadoc</javadocExecutable>
-					<javadocVersion>1.7</javadocVersion>
+					<javadocVersion>1.8</javadocVersion>
 					<linksource>true</linksource>
 					<links>
 						<link>http://docs.oracle.com/javase/7/docs/api/</link>
@@ -369,7 +369,7 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 							<version>2.9.1</version>
 							<configuration>
 								<javadocExecutable>${env.JAVA_HOME}/bin/javadoc</javadocExecutable>
-								<javadocVersion>1.7</javadocVersion>
+								<javadocVersion>1.8</javadocVersion>
 								<linksource>true</linksource>
 								<links>
 									<link>http://docs.oracle.com/javase/7/docs/api/</link>
