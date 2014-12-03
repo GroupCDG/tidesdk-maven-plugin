@@ -33,7 +33,7 @@ public abstract class AbstractTidesdkMojo extends AbstractMojo {
 	protected static final String CREATE_DIRECTORY_ERROR_MESSAGE = "Could not create directory ";
 
 	protected static enum OS {
-		win32("Windows", "python", "C:\\ProgramData\\TideSDK"),
+		win32("Windows", "python", "C:\\Program Files (x86)\\TideSDK Developer"),
 		osx("Mac", "python", System.getProperty("user.home") + "/Library/Application Support/TideSDK"),
 		linux("Linux", "python", System.getProperty("user.home") + "/.tidesdk");
 
