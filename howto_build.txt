@@ -4,7 +4,7 @@ tidesdk-maven-plugin
 TideSDK Maven Plugin requires the TideSDK command-Line tool to be installed in order to
 perform the build.
 
-To install the Cordova Command-Line tool, follow these steps:
+To install the TideSDK Command-Line tool, follow these steps:
 
 
 unzip -d TideSDK-1.3.1-beta-osx-x86-64.zip ~/Library/Application Support/TideSDK

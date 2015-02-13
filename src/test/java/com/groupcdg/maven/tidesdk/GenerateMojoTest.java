@@ -23,6 +23,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
@@ -100,7 +103,7 @@ public class GenerateMojoTest {
 				"image: img/icon.png");
 		assertIncluded(config(CUSTOM_SETTINGS_PROJECT, "tiapp.xml"),
 				"<name>Custom Settings Project</name>",
-				"<copyright>2014 Computing Distribution Group Ltd.</copyright>",
+				"<copyright>" + thisYear() + " Computing Distribution Group Ltd.</copyright>",
 				"<icon>img/icon.png</icon>",
 				"<width>1024</width>",
 				"<height>768</height>",
@@ -127,5 +130,9 @@ public class GenerateMojoTest {
 
 	private void assertExcluded(File file) {
 		assertFalse("File should be excluded: " + file.getAbsolutePath(), file.exists());
+	}
+
+	private int thisYear() {
+		return Calendar.getInstance().get(Calendar.YEAR);
 	}
 }
