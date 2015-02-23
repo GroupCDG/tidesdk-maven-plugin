@@ -99,12 +99,12 @@ Copyright &#169; 2014 Computing Distribution Group Ltd. All rights reserved.
 		</site>
 		<repository>
 			<id>groupcdg-nexus-releases</id>
-			<url>https://repo.groupcdg.com/content/repositories/releases/</url>
+			<url>https://repo.groupcdg.com/content/repositories/public-releases/</url>
 			<name>Nexus Release Repository</name>
 		</repository>
 		<snapshotRepository>
 			<id>groupcdg-nexus-snapshots</id>
-			<url>https://repo.groupcdg.com/content/repositories/snapshots/</url>
+			<url>https://repo.groupcdg.com/content/repositories/public-snapshots/</url>
 			<name>Sonatype Nexus Snapshots</name>
 		</snapshotRepository>
 	</distributionManagement>
